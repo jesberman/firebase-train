@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Train Schedule</title>
+
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+
+<body>
+
+        <header class="jumbotron">
+
+                <h1>
+                    Train Schedule
+                </h1>
+        
+        </header>
+
+<div id="main">
+
+    <form>
+        <input type="text" id="tname" placeholder="Train Name">
+        <input type="text" id="dest" placeholder="Destination">
+
+        <input type="text" id="first-train" placeholder="First Train Time (HH:mm -military time">
+        <input type="text" id="frequency" placeholder="Frequency">
+
+    	<input type="button" class="add-row" value="Add Row">
+    </form>
+    <table>
+        <thead>
+            <tr id="header">
+                <th></th>
+                <th>Train Name</th>
+                <th>Destination</th>
+                <th>First Train Time</th>
+                <th>Frequency (in min)</th>
+                <th>Minutes Away</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            <!--<tr>
+                <td>Shinra</td>
+                <td>Midgard</td>
+                <td>11am</td>
+                <td>30</td>
+            </tr>-->  
+        </tbody> 
+
+    </table>
+    <button type="button" class="delete-row">Delete Row</button>
+
+</div>
+
+
+    <script src="assets/javascript/logic.js">
+    </script>
+
+</body> 
+
+
+</html>                            

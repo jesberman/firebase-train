@@ -1,148 +1,127 @@
+var i = 0;
+//Firebase initialization code
 var config = {
-    apiKey: "AIzaSyCKSrH0SiVvktWkBz02vVd3Oaf4W5gwVYY",
-    authDomain: "train-schedule-4b4e6.firebaseapp.com",
-    databaseURL: "https://train-schedule-4b4e6.firebaseio.com",
-    storageBucket: "train-schedule-4b4e6.appspot.com"
+  apiKey: "AIzaSyCKSrH0SiVvktWkBz02vVd3Oaf4W5gwVYY",
+  authDomain: "train-schedule-4b4e6.firebaseapp.com",
+  databaseURL: "https://train-schedule-4b4e6.firebaseio.com",
+  projectId: "train-schedule-4b4e6",
+  storageBucket: "train-schedule-4b4e6.appspot.com",
+  messagingSenderId: "559824584786"
 };
 firebase.initializeApp(config);
-// VARIABLES
-// --------------------------------------------------------------------------------
-// Get a reference to the database service
+
+
+// declares a database variable, and connects it to the firebase database
 var database = firebase.database();
 
-
-
-
-
-
-
-
-//--------------------------------
-
-
-
-
-
-
+//tells the code to be ready for the following commads and functions
 $(document).ready(function () {
 
-    $(".add-row").click(function () {
-        var tname = $("#tname").val().trim();
 
-        var dest = $("#dest").val().trim();
+//Tells the code to run when the add-row button is clicked
+  $(".add-row").click(function () {
 
-        var firstTrainTime = $("#first-train").val().trim();
+    //Creates a variable that relates to the current year
+    var year = moment().year();
+    console.log(year);
 
-        var frequency = $("#frequency").val().trim();
+    //Creates a variable that relates to the current month
+    var month = moment().month();
+    console.log(month);
 
-        var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + tname + "</td><td>" + dest + "</td>    <td>" + firstTrainTime + "</td>   <td>" + frequency + "</td>  <td>" + "Minutes Away" + "</td>  </tr>";
-
-
-        var newTrain = {
-
-            name: tname,
-            destination: dest,
-            first_train: firstTrainTime,
-            frequncy: frequency
-        }
+    //Creates a variable that relates to the current date
+    var date = moment().date();
+    console.log(date);
 
 
+    //Creates a variable and sets its value to what the user inputs in the tname text field
+    var tname = $("#tname").val().trim();
 
-        database.ref().push(newTrain);
+    //Creates a variable and sets its value to what the user inputs in the dest text field
+    var dest = $("#dest").val().trim();
 
-        $("table tbody").append(markup);
+    //Creates a variable and sets its value to what the user inputs in the first_train text field
+    //Also uses moment.js to format it to hours and minutes
+    var firstTrainTime = moment($("#first_train").val().trim(), "HH:mm").format("HH:mm");
 
-
-
-        function deleteRow() {
-            $("table tbody").find('input[name="record"]').each(function () {
-                if ($(this).is(":checked")) {
-                    $(this).parents("tr").remove();
-                }
-            });
-
-        }
-
-        // Find and remove selected table rows
-        $(".delete-row").click(function () {
-
-            deleteRow();
+    //Creates a variable and sets its value to what the user inputs in the frequency text field
+    var freq = $("#frequency").val().trim();
 
 
+    //creates a new object called "newTrain", with values from the above user input fields
+    var newTrain = {
 
-        });
-    });
+      name: tname,
+      destination: dest,
+      first_train: firstTrainTime,
+      frequency: freq
+    }
+
+    //Pushes the newTrain object into the firebase database
+    database.ref().push(newTrain);
+
+    //resets the values of the text fields to blank, so that new data can easily be entered
+    $("#tname").val("");
+    $("#dest").val("");
+    $("#first_train").val("");
+    $("#frequency").val("");
+
+    return false;
+
+  });
+
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 //API Section:---------------------------------------------------
 
+//tells the code to retrieve specific information from the firebase database
+database.ref().on("child_added", function (childSnapshot) {
+  console.log(childSnapshot.val());
 
 
+  //creates four new variables and sets them to equal the appropriate value that is stored in the database
+  var tname = childSnapshot.val().name;
+  var dest = childSnapshot.val().destination;
+  var firstTrainTime = childSnapshot.val().first_train;
+  var freq = childSnapshot.val().frequency;
 
+  //take the value stored in the firstTrainTime variable and converts it to moment.js in hours and minutes format
+  var firstTimeConverted = moment(firstTrainTime, "HH:mm");
 
-// Setting initial value of our click counter variable to 0
-var bigOne = document.getElementById('bigOne');
+  //creates a variable equal to the current time right now
+  var timeNow = moment().format("HH:mm");
 
-var dbRef = firebase.database().ref().child('text');
-dbRef.on('value', snap => bigOne.innerText = snap.val());
+  //creates a variable equal to the time right now minus the firstTimeConverted variable, which is equal to the time the first train of the day is set to arrive
+  var timeDifference = moment().diff(moment(firstTimeConverted), "minutes");
+  console.log(("Time Difference: ") + timeDifference);
 
-var clickCounter = 0;
+  //creates a variable that finds the remiander between timeDifference and freq
+  var remainderMinutes = timeDifference % freq;
 
+  //creates a variable that equals the number of minutes between each iteration of the train minus remainderMinutes
+  var trainArrival = freq - remainderMinutes;
 
+  //takes the trainArrival variable and converts it to moment.js in hours and minutes format
+  var nextTrain = moment().add(trainArrival, "minutes").format("HH:mm");
 
+  //creates an if / else statement
+  //if the time of day is past the time when the first train arrives, the following code runs, showing the number of minutes until the next iteration of train arrivals
+  if (timeDifference > 0) {
+    console.log("First Train Has Already Arrived");
+    $("#table>tbody").append("   <tr><td><input type='checkbox' </td><td>" + tname + "</td><td>" + dest + "</td><td>" + firstTrainTime + "</td><td>" + freq + "</td><td>" + trainArrival + "</td></tr>");
+  }
 
-database.ref().once("value", function (snapshot) {
-    // Then we console.log the value of snapshot
-    // console.log(snapshot.val());
+  //otherwise, the followind code runs, showing how long until the first train arrives
+  else {
+    console.log("First Train Has Not Yet Arrived");
+    $("#table>tbody").append("   <tr><td><input type='checkbox' </td><td>" + tname + "</td><td>" + dest + "</td><td>" + firstTrainTime + "</td><td>" + freq + "</td><td>" + (timeDifference * (-1)) + "</td></tr>");
 
+  }
 
+ });
 
-    // urlRef.once("value", function(snapshot) {
-    snapshot.forEach(function (child) {
-
-        var tname = child.val().name;
-
-        var dest = child.val().destination;
-
-        var firstTrainTime = child.val().first_train;
-
-        var frequency = child.val().frequncy;
-
-        var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + tname + "</td><td>" + dest + "</td>    <td>" + firstTrainTime + "</td>   <td>" + frequency + "</td>  <td>" + "Minutes Away" + "</td>  </tr>";
-
-        $("table tbody").append(markup);
-
-        //   console.log(child.key+": "+child.val());
-    });
-    //   });
-
-
-
-
-    // Then we change the html associated with the number.
-    $("#click-value").text(snapshot.val().clickCount);
-    // Then update the clickCounter variable with data from the database.
-    clickCounter = snapshot.val().clickCount;
-    // If there is an error that Firebase runs into -- it will be stored in the "errorObject"
-    // Again we could have named errorObject anything we wanted.
-}, function (errorObject) {
-    // In case of error this will print the error
-    console.log("The read failed: " + errorObject.code);
-});
 
 
 

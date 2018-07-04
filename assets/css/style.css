@@ -85,3 +85,72 @@ color: white;
 text-shadow: 2px 2px 4px #000000;
 
 }
+
+
+
+#tname {
+    float: left;
+
+
+}
+
+#dest {
+
+float: left;
+}
+
+
+#first-train-h {
+
+    float: left;
+
+}
+
+
+
+#first-train-m {
+
+    float: left;
+
+}
+
+
+#frequency {
+
+    float: left;
+ 
+}
+
+
+#tname2 {
+
+    float: left;
+
+}
+
+#dest2 {
+
+float: left;
+}
+
+
+#first-train-h2 {
+
+    float: left;
+
+}
+
+
+
+#first-train-m2 {
+
+    float: left;
+
+}
+
+
+#frequency2 {
+
+    float: left;
+ 
+}

@@ -1,81 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<title>Train Schedule</title>
+    <meta charset="utf-8">
+    <title>Train Schedule</title>
 
 
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
 
 
 
-<link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
 
 
-<script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 </head>
 
 
 <body>
 
-    <h1 id="bigOne">Welcome to Your Train Schedule</h1>
+    <!--<h1 id="bigOne">Welcome to Your Train Schedule</h1>-->
 
 
-        <header class="jumbotron">
+    <header class="jumbotron">
 
-                <h1>
-                    Train Schedule
-                </h1>
-        
-        </header>
+        <h1>
+            Train Schedule
+        </h1>
 
-<div id="main">
 
-    <form>
-        <input type="text" id="tname" placeholder="Train Name">
-        <input type="text" id="dest" placeholder="Destination">
+        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
-        <input type="text" id="first-train" placeholder="First Train Time (HH:mm -military time">
-        <input type="text" id="frequency" placeholder="Frequency">
 
-    	<input type="button" class="add-row" value="Add Row">
-    </form>
-    <table>
-        <thead>
-            <tr id="header">
-                <th></th>
-                <th>Train Name</th>
-                <th>Destination</th>
-                <th>First Train Time</th>
-                <th>Frequency (in min)</th>
-                <th>Minutes Away</th>
+    </header>
 
-            </tr>
-        </thead>
+    <div id="main">
 
-        <tbody>
-            <!--<tr>
-                <td>Shinra</td>
-                <td>Midgard</td>
-                <td>11am</td>
-                <td>30</td>
-            </tr>-->  
-        </tbody> 
+        <form>
+            <input type="text" id="tname" placeholder="Train Name">
+            <input type="text" id="dest" placeholder="Destination">
+            <input type="text" id="first_train" placeholder="First Train*">
+            <input type="text" id="frequency" placeholder="Frequency">
+            <input type="button" class="add-row" value="Add Row">
+        </form>
+        <div>
+            <p>*Must enter hours and minutes in military time. Ex: 3pm should be written as "15:00" </p>
+        </div>
+        <table id="table">
+            <thead>
+                <tr id="header">
+                    <th></th>
+                    <th>Train Name</th>
+                    <th>Destination</th>
+                    <th>First Train of the Day (military time)</th>
+                    <th>Frequency (in min)</th>
+                    <th>Minutes Away</th>
 
-    </table>
-    <button type="button" class="delete-row">Delete Row</button>
+                </tr>
+            </thead>
 
-</div>
+            <tbody>
+
+            </tbody>
+
+        </table>
+        <button type="button" class="delete-row">Delete Row</button>
+
+    </div>
 
 
     <script src="assets/javascript/logic.js">
     </script>
 
-</body> 
+</body>
 
 
-</html>                            
+</html>

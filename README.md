@@ -6,3 +6,6 @@ Still to be completed: the schedule needs to be connected to a firebase database
 
 
 *Update: Connected the page to a firebase database.  Entries written will now remain on the page until they are removed manually from the databse itself.  Currently the delete button serves now purpose.  Tasks that remain include "Minutes Away" field to accurately display how long until the next train arrives.
+
+
+*Update: was able to revise the code so that it now will tell a user the numebr of minutes before a train is expected to arrive, both before and after the first train of the day
